@@ -14,7 +14,7 @@
     "build": "tsc -p ./tsconfig.json",
     "build:watch": "tsc -w",
     "clear-features": "rm -f ./dist/Features/*.feature",
-    "full-feature-test": "yarn run relink-features && yarn run tsc && yarn run test-features",
+    "full-feature-test": "yarn run relink-features && yarn run build && yarn run test-features",
     "link-features": "cd ./dist/Features && ln -s ../../../shared/features/*.feature .",
     "lint": "tslint -p . src/**/*.ts",
     "relink-features": "yarn run clear-features && yarn run link-features",
