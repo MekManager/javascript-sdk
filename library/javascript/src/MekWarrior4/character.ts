@@ -1,9 +1,11 @@
+import { Equity } from 'interfaces/equity';
 import { Experience, toString } from '../interfaces';
 import { Attribute } from './attribute';
 import { Attributes } from './attributes';
 import { CharacterFlavor, newCharacterFlavor } from './characterFlavor';
 import { CharacterLifeModule } from './characterLifeModule';
 import { ClanCaste } from './clanCaste';
+import { Learning } from './learning';
 import { LifeModule } from './lifeModule';
 import { LifeStage } from './lifeStage';
 import { Name } from './name';
@@ -22,6 +24,7 @@ export class Character implements Experience {
 
   private _affiliations: CharacterLifeModule[];
   private _lifeModules: CharacterLifeModule[];
+  private _learning: Learning;
 
   constructor () {
     this.name = new Name();
@@ -60,7 +63,7 @@ export class Character implements Experience {
 
   /**
    * Returns an array of all life modules that are currently active on the
-   * character. For example, this excludeds any affiliation other than the most
+   * character. For example, this excludes any affiliation other than the most
    * recent one, as only rules from the most recent (i.e. "active") affiliation
    * count.
    */
@@ -75,6 +78,34 @@ export class Character implements Experience {
     } else {
       return [ currentAffiliation, ...nonAffilations ];
     }
+  }
+
+  get learning (): Learning {
+    if (this._learning) {
+      return this._learning;
+    }
+
+    // TODO: find a better way to determine learning traits than literally
+    // searching for their names as strings
+    const slow = this.traits.find(t => t.name === 'Slow Learner');
+
+    if (slow && slow.isActive) {
+      this._learning = Learning.SLOW;
+
+      return this._learning;
+    }
+
+    const fast = this.traits.find(t => t.name === 'Fast Learner');
+
+    if (fast && fast.isActive) {
+      this._learning = Learning.FAST;
+
+      return this._learning;
+    }
+
+    this._learning = Learning.STANDARD;
+
+    return this._learning;
   }
 
   /**
@@ -127,29 +158,13 @@ export class Character implements Experience {
    */
   public addLifeModule (stage: LifeStage, lm: LifeModule, field?: string): void {
     // Can't take the same affiliation twice
-    if (stage === LifeStage.AFFILIATION) {
-      const alreadyTaken = this._lifeModules.filter(
-        l => l.stage === stage && l.name === lm.name
-      ).length > 0;
-
-      if (alreadyTaken) {
-        return;
-      }
+    if (this._affiliationTaken(stage, lm)) {
+      return;
     }
 
-    const module = new CharacterLifeModule(stage, lm);
-    if (field) {
-      module.fields.push(field);
-    }
-
-    this._lifeModules.push(module);
-
-    // If the `LifeModule` being added is an affiliation make sure that the
-    // _affiliations array gets re-cached.
-    if (lm.stage === LifeStage.AFFILIATION) {
-      this._affiliations = [];
-      this.affiliations();
-    }
+    this._preAllocateFixedXps(lm);
+    this._addCharacterLifeModule(stage, lm, field);
+    this._reCacheAffiliations(lm);
   }
 
   /**
@@ -174,8 +189,33 @@ export class Character implements Experience {
    * @param attr The attribute to add the XP to
    * @param xp The amount of XP that's being added
    */
-  public addAttributeXP (attr: Attribute, xp: number): void {
+  public addAttributeXP (attr: Attribute, xp: number, spend = true): void {
     this.attributes.addXP(xp, attr);
+    if (spend) {
+      this.removeXP(xp);
+    }
+  }
+
+  /**
+   * TODO: Write Me!
+   *
+   * @param target The skill to have XP added to
+   * @param xp The amount of XP the skill should have added to it
+   * @param spend If this XP should come from the character's XP pool, defaults to true
+   */
+  public addSkillXP (target: Skill, xp: number, spend = true): void {
+    this.skills = this._addToExperience<Skill>(this.skills, target, xp, spend);
+  }
+
+  /**
+   * TODO: Write Me!
+   *
+   * @param target The trait to have XP added to
+   * @param xp The amount of XP the trait should have added to it
+   * @param spend If this XP should come from the character's XP pool, defaults to true
+   */
+  public addTraitXP (target: Trait, xp: number, spend = true): void {
+    this.traits = this._addToExperience<Trait>(this.traits, target, xp, spend);
   }
 
   /**
@@ -184,8 +224,33 @@ export class Character implements Experience {
    * @param attr The attribute to add the XP to
    * @param xp The amount of XP that's being added
    */
-  public removeAttributeXP (attr: Attribute, xp: number): void {
+  public removeAttributeXP (attr: Attribute, xp: number, refund = true): void {
     this.attributes.removeXP(xp, attr);
+    if (refund) {
+      this.addXP(xp);
+    }
+  }
+
+  /**
+   * TODO: Write Me!
+   *
+   * @param target The skill to have XP removed from
+   * @param xp The amount of XP to remove from the skill
+   * @param refund If the XP should go back to the character's XP pool, defaults to true
+   */
+  public removeSkillXP (target: Skill, xp: number, refund = true): void {
+    this.skills = this._removeFromExperience<Skill>(this.skills, target, xp, refund);
+  }
+
+  /**
+   * TODO: Write Me!
+   *
+   * @param target The trait to have XP removed from
+   * @param xp The amount of XP to remove from the trait
+   * @param refund If the XP should go back to the character's XP pool, defaults to true
+   */
+  public removeTraitXP (target: Trait, xp: number, refund = true): void {
+    this.traits = this._removeFromExperience<Trait>(this.traits, target, xp, refund);
   }
 
   /**
@@ -219,5 +284,94 @@ export class Character implements Experience {
   public traitStrings (): string[] {
     return this.traits.map(toString);
   }
-}
 
+  public xpValue (): number {
+    return this.xp;
+  }
+
+  private _preAllocateFixedXps (lm: LifeModule): void {
+    lm.fixedXps.forEach(set => {
+      if (set.requiresChoices) {
+        return;
+      }
+
+      set.options.forEach((option: Attribute | Experience, index: number) => {
+        if (typeof option === 'string') {
+          this.addAttributeXP(option as Attribute, set.xp, false);
+          set.take(index);
+        } else {
+          if (option instanceof Skill) {
+            this.addSkillXP(option, set.xp, false);
+          } else if (option instanceof Trait) {
+            this.addTraitXP(option, set.xp, false);
+          }
+        }
+      });
+    });
+  }
+
+  private _addCharacterLifeModule (stage: LifeStage, lm: LifeModule, field?: string): void {
+    const module = new CharacterLifeModule(stage, lm);
+    if (field) {
+      module.fields.push(field);
+    }
+
+    this._lifeModules.push(module);
+  }
+
+  // If the `LifeModule` being added is an affiliation make sure that the
+  // _affiliations array gets re-cached.
+  private _reCacheAffiliations (lm: LifeModule): void {
+    if (lm.stage === LifeStage.AFFILIATION) {
+      this._affiliations = [];
+      this.affiliations();
+    }
+  }
+
+  private _addToExperience<T extends Experience & Equity> (ts: T[], target: T, xp: number, spend: boolean): T[] {
+    const t = ts.find(x => x.equal(target));
+
+    if (spend) {
+      this.removeXP(xp);
+    }
+
+    if (t) {
+      t.addXP(xp, this.learning);
+
+      return ts;
+    } else {
+      target.addXP(xp, this.learning);
+
+      return [ ...ts, target];
+    }
+  }
+
+  private _removeFromExperience<T extends Experience & Equity> (ts: T[], target: T, xp: number, refund: boolean): T[] {
+    const t = ts.find(x => x.equal(target));
+
+    if (refund) {
+      this.addXP(xp);
+    }
+
+    if (t) {
+      t.removeXP(xp, this.learning);
+
+      return (t.xpValue() === 0) ? ts.filter(x => !x.equal(t)) : ts;
+    } else {
+      target.removeXP(xp, this.learning);
+
+      return [ ...ts, target ];
+    }
+  }
+
+  // Determines if a given life module has already been taken as an affiliation
+  private _affiliationTaken (stage: LifeStage, lm: LifeModule): boolean {
+    if (stage === LifeStage.AFFILIATION) {
+      return this._lifeModules.filter(
+        l => l.stage === stage && l.name === lm.name
+      ).length > 0;
+    } else {
+      return false;
+    }
+  }
+}

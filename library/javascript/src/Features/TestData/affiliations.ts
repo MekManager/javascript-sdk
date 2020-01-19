@@ -1,27 +1,41 @@
-import { LifeModule, LifeStage } from '../../MekWarrior4';
+import { Attribute, FixedXP, LifeModule, LifeStage, Skill, SkillBase, Trait, TraitBase } from '../../MekWarrior4';
 import { mockRules } from './rules';
 
-const defaultAffiliation = new LifeModule(
-  LifeStage.AFFILIATION,
-  'standard place',
-  []
-);
+const addFixedXps = (base: LifeModule, xps: FixedXP[]) => {
+  base.fixedXps = xps;
+
+  return base;
+};
+
+const basicLifeModule = () => {
+  return new LifeModule(
+    LifeStage.AFFILIATION,
+    'standard place',
+    [],
+    []
+  );
+};
+
+const defaultAffiliation = basicLifeModule();
 
 const cantBeOnly = new LifeModule(
   LifeStage.AFFILIATION,
   'lonely place',
-  [ mockRules.cannotBeOnlyAffiliation ]
+  [ mockRules.cannotBeOnlyAffiliation ],
+  []
 );
 
 const legalChildLabor = new LifeModule(
   LifeStage.AFFILIATION,
   'Not a very fun place',
-  [ mockRules.legalChildLabor, mockRules.noHigherEducation ]
+  [ mockRules.legalChildLabor, mockRules.noHigherEducation ],
+  []
 );
 
 const clan = new LifeModule(
   LifeStage.AFFILIATION,
   'A Clan',
+  [],
   [],
   true
 );
@@ -30,13 +44,15 @@ const sphereClanHybrid = new LifeModule(
   LifeStage.AFFILIATION,
   'Hybrid Clan/Sphere',
   [ mockRules.actsAsClan ],
+  [],
   false // Being explicit here because it's the point
 );
 
 const noFarm = new LifeModule(
   LifeStage.AFFILIATION,
   'NO FARMS!',
-  [ mockRules.noFarm, mockRules.noGreenThumb ]
+  [ mockRules.noFarm, mockRules.noGreenThumb ],
+  []
 );
 
 const royalSnob = new LifeModule(
@@ -46,37 +62,43 @@ const royalSnob = new LifeModule(
     mockRules.forcedToFarmUnlessRoyal,
     mockRules.rankRestrictedByTrait,
     mockRules.noMekTraitingWithoutTitle,
-  ]
+  ],
+  []
 );
 
 const minimumAttrPlace = new LifeModule(
   LifeStage.AFFILIATION,
   'Top Performers Club',
-  [ mockRules.traitRequiresAttributeScore ]
+  [ mockRules.traitRequiresAttributeScore ],
+  []
 );
 
 const minimumAttrAffiliationPlace = new LifeModule(
   LifeStage.AFFILIATION,
   'Early Life Top Performers Club',
-  [ mockRules.traitRequiresAttributeScoreForStage ]
+  [ mockRules.traitRequiresAttributeScoreForStage ],
+  []
 );
 
 const eliteFarmer = new LifeModule(
   LifeStage.AFFILIATION,
   'Elite Farmer',
-  [ mockRules.linkedTraits, mockRules.apprenticeShipOnly ]
+  [ mockRules.linkedTraits, mockRules.apprenticeShipOnly ],
+  []
 );
 
 const deepPeriphery = new LifeModule(
   LifeStage.AFFILIATION,
   'Deep Periphery',
-  [ mockRules.noMekOrBattleArmor ]
+  [ mockRules.noMekOrBattleArmor ],
+  []
 );
 
 const bigBoyClan = new LifeModule(
   LifeStage.AFFILIATION,
   'Clan BigBoy',
   [ mockRules.mustUseOtherPhenotype ],
+  [],
   true
 );
 
@@ -84,6 +106,7 @@ const topTierClan = new LifeModule(
   LifeStage.AFFILIATION,
   'Clan TopTier',
   [ mockRules.clanWarriorMustTakeTrait ],
+  [],
   true
 );
 
@@ -91,7 +114,77 @@ const topTierClan = new LifeModule(
 const topTierAssociate = new LifeModule(
   LifeStage.AFFILIATION,
   'TopTier Associate',
-  [ mockRules.clanWarriorMustTakeTrait, mockRules.actsAsClan ]
+  [ mockRules.clanWarriorMustTakeTrait, mockRules.actsAsClan ],
+  []
+);
+
+const fixedXpBod = addFixedXps(
+  basicLifeModule(),
+  [
+    new FixedXP(
+      1,
+      [Attribute.BOD],
+      20
+    ),
+  ]
+);
+
+const multipleChoiceAttrs = addFixedXps(
+  basicLifeModule(),
+  [
+    new FixedXP(
+      1,
+      [Attribute.BOD, Attribute.STR],
+      20
+    ),
+  ]
+);
+
+const noChoiceMultiAttrs = addFixedXps(
+  basicLifeModule(),
+  [
+    new FixedXP(
+      2,
+      [Attribute.BOD, Attribute.STR],
+      20
+    ),
+  ]
+);
+
+const computersSkill = addFixedXps(
+  basicLifeModule(),
+  [
+    new FixedXP(
+      1,
+      [new Skill(
+        new SkillBase({
+          name: 'Computers',
+          targetNumbers: [8, 9],
+          complexityRatings: ['CB', 'CA'],
+          tiered: true,
+          linkedAttributes: [Attribute.INT, [Attribute.DEX, Attribute.INT]],
+        })
+      )],
+      40
+    ),
+  ]
+);
+
+const inForLife = addFixedXps(
+  basicLifeModule(),
+  [
+    new FixedXP(
+      1,
+      [new Trait(
+        new TraitBase({
+          name: 'In For Life',
+          multipleAllowed: false,
+          min: 1,
+        })
+      )],
+      100
+    ),
+  ]
 );
 
 export const mockAffiliations = {
@@ -108,4 +201,9 @@ export const mockAffiliations = {
   'Royal Snob': royalSnob,
   'Sphere/Clan Hybrid': sphereClanHybrid,
   'Top Tier Clan': topTierClan,
+  'Fixed BOD XP': fixedXpBod,
+  'Multiple Choice Attributes': multipleChoiceAttrs,
+  'No Choice Multiple Attributes': noChoiceMultiAttrs,
+  'Computers skill': computersSkill,
+  'In For Life': inForLife,
 };

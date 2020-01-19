@@ -1,4 +1,5 @@
 import { Attribute } from './attribute';
+import { AttributeValues } from './attributeValues';
 import { Character } from './character';
 import { CharacterLifeModule } from './characterLifeModule';
 import { ClanCaste } from './clanCaste';
@@ -18,8 +19,11 @@ import { ValidatorFactory } from './validators/validatorFactory';
  */
 export class CharacterCreationHarness {
   public errors: ValidationError[];
+  public initialXP: number;
 
-  private _character: Character;
+  // I'm making the character public because I want to get rid of this thing,
+  // and I don't want to go adding any more wrapper methods
+  public _character: Character;
   private _valid: boolean;
 
   constructor (character: Character = undefined) {
@@ -30,6 +34,12 @@ export class CharacterCreationHarness {
     } else {
       this._character = new Character();
     }
+
+    this.initialXP = this._character.xpValue();
+  }
+
+  get currentXP () {
+    return this._character.xpValue();
   }
 
   public addAttributeXP (attr: Attribute, xp: number): void {
@@ -56,15 +66,21 @@ export class CharacterCreationHarness {
     this._character.traits.push(trait);
   }
 
+  public getAttributeValue (attr: Attribute): AttributeValues {
+    return this._character.attributes.getValues(attr);
+  }
+
   public valid (): boolean {
     return this._valid;
   }
 
-  // NOTE: this is again showing how this is pretty quickly being outgrown.
+  // NOTE: this shows again how quickly this is being outgrown.
   public modules (): CharacterLifeModule[] {
     return this._character.lifeModules;
   }
 
+  // NOTE: This method may be one of the only meaningful additions this harness
+  // provides.
   public validate (): boolean {
     const validators = ValidatorFactory.validators(this._character);
 

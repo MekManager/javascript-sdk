@@ -6,6 +6,7 @@ export { CharacterFlavor, newCharacterFlavor } from './characterFlavor';
 export { CharacterLifeModule } from './characterLifeModule';
 export { Character } from './character';
 export { ClanCaste, isWarriorCaste } from './clanCaste';
+export { FixedXP } from './fixedXp';
 export { ValidationError } from './errorMessage';
 export { Learning, fastXP, slowXP, standardXP, xpList } from './learning';
 export { LifeModule } from './lifeModule';

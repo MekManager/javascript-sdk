@@ -6,7 +6,7 @@ import {
   ClanCaste,
   LifeModule,
   LifeStage,
-  Trait
+  Trait,
 } from '../MekWarrior4';
 import { mockAffiliations } from './TestData/affiliations';
 import { mockLifeModules } from './TestData/lifeModules';
@@ -69,6 +69,13 @@ When('the character adds {int} XP to their {string} attribute', (xp: number, att
   world.harness.addAttributeXP(attr as Attribute, xp);
 });
 
+Then('the character should have a {string} score of {int}', (attr: Attribute, score: number) => {
+  expect(world.harness.getAttributeValue(attr).xp).to.equal(score);
+});
+
+Then('no XP should have been spent', () => {
+  expect(world.harness.initialXP).to.equal(world.harness.currentXP);
+});
 
 Then('the character should have {int} affiliation', (count: number) => {
   expect(world.harness.modules().length).to.equal(count);
@@ -81,4 +88,20 @@ Then('the character should be {string}', (validStr: string) => {
     valid,
     world.harness.errors.map(e => e.message).join('\n')
   );
+});
+
+Then('the character should have {int} {string}', (expectedCount: number, target: string) => {
+  const count = (target === 'skill' || target === 'skills')
+    ? world.harness._character.skills.length
+    : world.harness._character.traits.length;
+
+  expect(count).to.equal(expectedCount);
+});
+
+Then('the character should have a {string} {string} with {int} XP', (name: string, target: string, xp: number) => {
+  const experience = (target === 'skill')
+    ? world.harness._character.skills.find(s => s.name === name)
+    : world.harness._character.traits.find(t => t.name === name);
+
+  expect(experience.xpValue()).to.equal(xp);
 });

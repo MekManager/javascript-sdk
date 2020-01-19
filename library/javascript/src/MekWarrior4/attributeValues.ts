@@ -49,6 +49,10 @@ export class AttributeValues implements Experience {
     this._recalculate();
   }
 
+  public xpValue (): number {
+    return this.xp;
+  }
+
   /**
    * Re-calculates the `score` and `link` values. Getting the correct values
    * for them is dependent on running them in the right order. This helps

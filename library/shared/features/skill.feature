@@ -9,16 +9,19 @@ Feature: Skills
 
     Examples:
       | learning |  xp | level |
+      | Fast     | -10 |     0 |
       | Fast     |  18 |     0 |
       | Fast     |  20 |     0 |
       | Fast     | 153 |     5 |
       | Fast     | 160 |     5 |
       | Fast     | 513 |    10 |
+      | Standard | -10 |     0 |
       | Standard |  20 |     0 |
       | Standard |  25 |     0 |
       | Standard | 170 |     5 |
       | Standard | 180 |     5 |
       | Standard | 570 |    10 |
+      | Slow     | -10 |     0 |
       | Slow     |  22 |     0 |
       | Slow     |  26 |     0 |
       | Slow     | 187 |     5 |

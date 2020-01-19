@@ -1,3 +1,4 @@
+import { Equity } from 'interfaces/equity';
 import { Experience, Stringify } from '../interfaces';
 import { findLastIndex } from '../Utils/collections';
 import { Attribute } from './attribute';
@@ -5,7 +6,7 @@ import { Learning, xpList } from './learning';
 import { SkillBase } from './skillBase';
 
 // TODO: write more documentation for this
-export class Skill implements Experience, Stringify {
+export class Skill implements Equity, Experience, Stringify {
   public readonly base: SkillBase;
   public level: number;
   public xp: number;
@@ -18,6 +19,11 @@ export class Skill implements Experience, Stringify {
 
   constructor (base: SkillBase) {
     this.base = base;
+    this.xp = 0;
+  }
+
+  get name (): string {
+    return this.base.name;
   }
 
   public addXP (xp: number, l: Learning): void {
@@ -47,6 +53,15 @@ export class Skill implements Experience, Stringify {
     return str;
   }
 
+  public equal (s: Skill): boolean {
+    // TODO: Determine if there's a better way to do this
+    return this.toString() === s.toString();
+  }
+
+  public xpValue (): number {
+    return this.xp;
+  }
+
   /**
    * A `Skill` has several properties that need to be calculated based on it's
    * XP. Like other objects that require re-calculating, the order that these
@@ -66,6 +81,12 @@ export class Skill implements Experience, Stringify {
    * Determines and sets the level for the skill based on it's current XP.
    */
   private _calculateLevel (l: Learning): number {
+    if (this.xp < 0) {
+      this.level = 0;
+
+      return this.level;
+    }
+
     const value = findLastIndex((n) => this.xp >= n, xpList(l));
     this.level = value;
 
@@ -87,7 +108,7 @@ export class Skill implements Experience, Stringify {
   }
 
   /**
-   * This method is kinda tricky to understand.
+   * This method is tricky to understand.
    *
    * Some skills are "tiered"; which means that once the skill achieves a level
    * of 3 or higher it has different complexity, link values, and target

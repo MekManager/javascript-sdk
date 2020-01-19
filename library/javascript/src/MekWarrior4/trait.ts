@@ -1,8 +1,9 @@
+import { Equity } from 'interfaces/equity';
 import { Experience, Stringify } from '../interfaces';
 import { LifeStage } from './lifeStage';
 import { TraitBase } from './traitBase';
 
-export class Trait implements Experience, Stringify {
+export class Trait implements Equity, Experience, Stringify {
   public readonly base: TraitBase;
   /** The amount of Trait Points or TP a trait has. */
   public level: number;
@@ -38,6 +39,7 @@ export class Trait implements Experience, Stringify {
 
   constructor (base: TraitBase) {
     this.base = base;
+    this.xp = 0;
     this.level = this._calculatePoints(0);
   }
 
@@ -67,6 +69,10 @@ export class Trait implements Experience, Stringify {
     this.level = this._calculatePoints(xp);
   }
 
+  public equal (trait: Trait): boolean {
+    return this._compareForXPString() === trait._compareForXPString();
+  }
+
   /**
    * Sets the XP of this `Trait` to the given amount.
    *
@@ -91,7 +97,7 @@ export class Trait implements Experience, Stringify {
    * The string representation of this `Trait`.
    */
   public toString (): string {
-    let str = this.base.name;
+    let str = this.name;
 
     if (this.type) {
       str =`${str}: ${this.type}`;
@@ -109,6 +115,10 @@ export class Trait implements Experience, Stringify {
     return str;
   }
 
+  public xpValue (): number {
+    return this.xp;
+  }
+
   private _calculatePoints (xp: number): number {
     const points = Math.floor(xp / 100);
 
@@ -119,5 +129,23 @@ export class Trait implements Experience, Stringify {
     } else {
       return points;
     }
+  }
+
+  // Same as the `toString` method except without any value related to XP so
+  // it can be used to determine if it's the same trait to add XP to.
+  private _compareForXPString (): string {
+    let str = this.name;
+
+    if (this.type) {
+      str =`${str}: ${this.type}`;
+    }
+    if (this.subDescription) {
+      str = `${str}/${this.subDescription}`;
+    }
+    if (this.subject) {
+      str = `${str} (${this.subject})`;
+    }
+
+    return str;
   }
 }

@@ -98,4 +98,10 @@ export class Attributes implements Experience {
       values.setXP(xp);
     }
   }
+
+  public xpValue (attr: Attribute): number {
+    const values = this.getValues(attr);
+
+    return values.xpValue();
+  }
 }
