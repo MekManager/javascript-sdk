@@ -206,4 +206,29 @@ export const mockAffiliations = {
   'No Choice Multiple Attributes': () => noChoiceMultiAttrs,
   'Computers skill': () => computersSkill,
   'In For Life': () => inForLife,
+  'Linguist': () => addFixedXps(
+    basicLifeModule(),
+    [
+      new FixedXP(
+        1,
+        [
+          (() => {
+            const skill = new Skill(
+              new SkillBase({
+                name: 'Language',
+                targetNumbers: [8, 9],
+                complexityRatings: ['CB', 'CA'],
+                tiered: true,
+                linkedAttributes: [Attribute.INT, [Attribute.DEX, Attribute.INT]],
+              })
+            );
+            skill.subSkill = 'Any';
+
+            return skill;
+          })(),
+        ],
+        100
+      ),
+    ]
+  ),
 };

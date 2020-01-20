@@ -58,3 +58,10 @@ Scenario: Giving input for Fixed XPs with maximum choices
   And the character should have a "Strength" score of 20
   And the character should be "Valid"
   And no XP should have been spent
+
+Scenario: Skills that prevent automatic allocation
+  Given a new character
+  When the character takes the affiliation: "Linguist"
+  Then the character should have 0 "skills"
+  And the character should be "Valid"
+  And no XP should have been spent

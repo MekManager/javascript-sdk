@@ -1,5 +1,7 @@
 import { Experience } from '../interfaces';
 import { Attribute } from './attribute';
+import { Skill } from './skill';
+import { Trait } from './trait';
 
 export class FixedXP {
   /** Indexes of chosen XP Sets */
@@ -37,7 +39,21 @@ export class FixedXP {
    * allocated on a character.
    */
   get requiresChoices (): boolean {
-    return this.options.length !== this.choices;
+    // TODO: There's some issue with incompatible types in the union that
+    // options can be so I'm forcing it to be an array of anything here. I do
+    // want to re-think how I've set the types up later on, come back to this
+    // then.
+    const requireSubDescriptions = (this.options as any[]).filter(o => {
+      if (o instanceof Skill) {
+        return o.subSkill === 'Any';
+      } else if (o instanceof Trait) {
+        return o.subDescription === 'Any';
+      } else {
+        return false;
+      }
+    }).length !== 0;
+
+    return (this.options.length !== this.choices) || requireSubDescriptions;
   }
 
   /**
