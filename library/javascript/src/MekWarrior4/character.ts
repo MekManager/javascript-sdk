@@ -5,6 +5,7 @@ import { Attributes } from './attributes';
 import { CharacterFlavor, newCharacterFlavor } from './characterFlavor';
 import { CharacterLifeModule } from './characterLifeModule';
 import { ClanCaste } from './clanCaste';
+import { FixedXP } from './fixedXp';
 import { Learning } from './learning';
 import { LifeModule } from './lifeModule';
 import { LifeStage } from './lifeStage';
@@ -278,6 +279,21 @@ export class Character implements Experience {
     return this.skills.map(toString);
   }
 
+  public selectFixedXP (
+    lifeModuleIndex: number,
+    fixedXpIndex: number,
+    optionIndex: number
+  ): void {
+    const xpSet = this.lifeModules[lifeModuleIndex].fixedXps[fixedXpIndex];
+    const option = xpSet.options[optionIndex];
+
+    // The specified option will only be applied if the Fixed XP still has XP to
+    // be allocated.
+    if (xpSet.incomplete) {
+      this._applyFixedXpOption(option, xpSet, optionIndex);
+    }
+  }
+
   /**
    * Returns all of this character's traits in stringified form.
    */
@@ -296,18 +312,23 @@ export class Character implements Experience {
       }
 
       set.options.forEach((option: Attribute | Experience, index: number) => {
-        if (typeof option === 'string') {
-          this.addAttributeXP(option as Attribute, set.xp, false);
-          set.take(index);
-        } else {
-          if (option instanceof Skill) {
-            this.addSkillXP(option, set.xp, false);
-          } else if (option instanceof Trait) {
-            this.addTraitXP(option, set.xp, false);
-          }
-        }
+        this._applyFixedXpOption(option, set, index);
       });
     });
+  }
+
+  private _applyFixedXpOption (option: Attribute | Experience, set: FixedXP, index: number): void {
+    if (typeof option === 'string') {
+      this.addAttributeXP(option as Attribute, set.xp, false);
+    } else {
+      if (option instanceof Skill) {
+        this.addSkillXP(option, set.xp, false);
+      } else if (option instanceof Trait) {
+        this.addTraitXP(option, set.xp, false);
+      }
+    }
+
+    set.take(index);
   }
 
   private _addCharacterLifeModule (stage: LifeStage, lm: LifeModule, field?: string): void {

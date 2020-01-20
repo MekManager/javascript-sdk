@@ -21,7 +21,7 @@ Given('a new character', () => {
 
 
 When('the character takes the affiliation: {string}', (affil: string) => {
-  const affiliation: LifeModule = mockAffiliations[affil];
+  const affiliation: LifeModule = mockAffiliations[affil]();
   expect(affiliation).not.to.be.undefined;
 
   world.harness.addAffiliation(affiliation);
@@ -62,6 +62,17 @@ When(
     }
 
     world.harness.addTrait(trait);
+  }
+);
+
+When(
+  /^the user selects the (\d+)\w{2} option for the (\d+)\w{2} Fixed XP of the (\d+)\w{2} Life Module$/,
+  (optionIndex: number, fixedXpIndex: number, lifeModuleIndex: number) => {
+    world.harness._character.selectFixedXP(
+      (lifeModuleIndex - 1),
+      (fixedXpIndex - 1),
+      (optionIndex - 1)
+    );
   }
 );
 

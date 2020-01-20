@@ -129,17 +129,6 @@ const fixedXpBod = addFixedXps(
   ]
 );
 
-const multipleChoiceAttrs = addFixedXps(
-  basicLifeModule(),
-  [
-    new FixedXP(
-      1,
-      [Attribute.BOD, Attribute.STR],
-      20
-    ),
-  ]
-);
-
 const noChoiceMultiAttrs = addFixedXps(
   basicLifeModule(),
   [
@@ -188,22 +177,33 @@ const inForLife = addFixedXps(
 );
 
 export const mockAffiliations = {
-  "Can't Be Only": cantBeOnly,
-  'Big Boy Clan': bigBoyClan,
-  'Child Labor': legalChildLabor,
-  'Clan': clan,
-  'Deep Periphery': deepPeriphery,
-  'Default': defaultAffiliation,
-  'Elite Farmer': eliteFarmer,
-  'Minimum Attr for Affiliation': minimumAttrAffiliationPlace,
-  'Minimum Attrs': minimumAttrPlace,
-  'No Farm': noFarm,
-  'Royal Snob': royalSnob,
-  'Sphere/Clan Hybrid': sphereClanHybrid,
-  'Top Tier Clan': topTierClan,
-  'Fixed BOD XP': fixedXpBod,
-  'Multiple Choice Attributes': multipleChoiceAttrs,
-  'No Choice Multiple Attributes': noChoiceMultiAttrs,
-  'Computers skill': computersSkill,
-  'In For Life': inForLife,
+  "Can't Be Only": () => cantBeOnly,
+  'Big Boy Clan': () => bigBoyClan,
+  'Child Labor': () => legalChildLabor,
+  'Clan': () => clan,
+  'Deep Periphery': () => deepPeriphery,
+  'Default': () => defaultAffiliation,
+  'Elite Farmer': () => eliteFarmer,
+  'Minimum Attr for Affiliation': () => minimumAttrAffiliationPlace,
+  'Minimum Attrs': () => minimumAttrPlace,
+  'No Farm': () => noFarm,
+  'Royal Snob': () => royalSnob,
+  'Sphere/Clan Hybrid': () => sphereClanHybrid,
+  'Top Tier Clan': () => topTierClan,
+  'Fixed BOD XP': () => fixedXpBod,
+  // This needs to be invoked as a function otherwise it isn't unique between
+  // scenarios in the features.
+  'Multiple Choice Attributes': () => addFixedXps(
+    basicLifeModule(),
+    [
+      new FixedXP(
+        1,
+        [Attribute.BOD, Attribute.STR],
+        20
+      ),
+    ]
+  ),
+  'No Choice Multiple Attributes': () => noChoiceMultiAttrs,
+  'Computers skill': () => computersSkill,
+  'In For Life': () => inForLife,
 };

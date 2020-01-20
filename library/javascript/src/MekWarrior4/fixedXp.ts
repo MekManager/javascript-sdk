@@ -21,6 +21,13 @@ export class FixedXP {
     return this._chosen.length === this.choices;
   }
 
+  /**
+   * Returns if XP still needs to be allocated.
+   */
+  get incomplete (): boolean {
+    return !this.complete;
+  }
+
   get forAttributes () {
     return typeof this.options[0] === 'string';
   }

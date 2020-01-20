@@ -39,3 +39,22 @@ Scenario: Adding a trait
   And the character should have a "In For Life" "trait" with 100 XP
   And the character should be "Valid"
   And no XP should have been spent
+
+Scenario: Giving input for Fixed XPs
+  Given a new character
+  When the character takes the affiliation: "Multiple Choice Attributes"
+  And the user selects the 2nd option for the 1st Fixed XP of the 1st Life Module
+  Then the character should have a "Body" score of 0
+  And the character should have a "Strength" score of 20
+  And the character should be "Valid"
+  And no XP should have been spent
+
+Scenario: Giving input for Fixed XPs with maximum choices
+  Given a new character
+  When the character takes the affiliation: "Multiple Choice Attributes"
+  And the user selects the 2nd option for the 1st Fixed XP of the 1st Life Module
+  And the user selects the 1st option for the 1st Fixed XP of the 1st Life Module
+  Then the character should have a "Body" score of 0
+  And the character should have a "Strength" score of 20
+  And the character should be "Valid"
+  And no XP should have been spent

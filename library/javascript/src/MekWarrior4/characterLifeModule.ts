@@ -1,3 +1,4 @@
+import { FixedXP } from './fixedXp';
 import { LifeModule } from './lifeModule';
 import { LifeStage } from './lifeStage';
 import { Rule } from './rule';
@@ -47,6 +48,10 @@ export class CharacterLifeModule {
    */
   get isClan (): boolean {
     return this._module.isClan;
+  }
+
+  get fixedXps (): FixedXP[] {
+    return this._module.fixedXps;
   }
 
   /**
