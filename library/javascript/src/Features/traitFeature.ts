@@ -15,7 +15,7 @@ When('{int} XP is added to the trait', (xp: number) => {
 
 When('the sub-description is set to {string}', (desc: string) => {
   if (desc.trim() !== '') {
-    world.trait.subDescription = desc;
+    world.trait.subName = desc;
   }
 });
 

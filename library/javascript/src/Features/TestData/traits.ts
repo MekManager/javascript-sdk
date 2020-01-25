@@ -45,7 +45,7 @@ const mekwarriorPhenotype = (() => {
     name: 'Phenotype',
     multipleAllowed: false,
   }));
-  trait.subDescription = 'MekWarrior';
+  trait.subName = 'MekWarrior';
 
   return trait;
 })();
@@ -55,7 +55,7 @@ const aerospacePhenotype = (() => {
     name: 'Phenotype',
     multipleAllowed: false,
   }));
-  trait.subDescription = 'Aerospace';
+  trait.subName = 'Aerospace';
 
   return trait;
 })();
@@ -65,7 +65,7 @@ const elementalPhenotype = (() => {
     name: 'Phenotype',
     multipleAllowed: false,
   }));
-  trait.subDescription = 'Elemental';
+  trait.subName = 'Elemental';
 
   return trait;
 })();

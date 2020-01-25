@@ -44,10 +44,10 @@ export class FixedXP {
     // want to re-think how I've set the types up later on, come back to this
     // then.
     const requireSubDescriptions = (this.options as any[]).filter(o => {
-      if (o instanceof Skill) {
-        return o.subSkill === 'Any';
-      } else if (o instanceof Trait) {
-        return o.subDescription === 'Any';
+      if (o instanceof Skill || o instanceof Trait) {
+        // TODO: decide if a choice of any should be represented by the actual
+        // word "Any", or use a "*". The star could be more compatible for i18n
+        return o.subName === 'Any';
       } else {
         return false;
       }

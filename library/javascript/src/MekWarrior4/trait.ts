@@ -13,7 +13,7 @@ export class Trait implements Equity, Experience, Stringify {
    * A further description of a trait, usually to differentiate a trait taken
    * multiple times.
    */
-  public subDescription?: string;
+  public subName?: string;
   /**
    * Further clarification on a `subDescription`. This is useful in
    * situations where there's multiple of the same thing. i.e:
@@ -105,8 +105,8 @@ export class Trait implements Equity, Experience, Stringify {
     if (this.isActive) {
       str = `${str} (${this.level})`;
     }
-    if (this.subDescription) {
-      str = `${str}/${this.subDescription}`;
+    if (this.subName) {
+      str = `${str}/${this.subName}`;
     }
     if (this.subject) {
       str = `${str} (${this.subject})`;
@@ -139,8 +139,8 @@ export class Trait implements Equity, Experience, Stringify {
     if (this.type) {
       str =`${str}: ${this.type}`;
     }
-    if (this.subDescription) {
-      str = `${str}/${this.subDescription}`;
+    if (this.subName) {
+      str = `${str}/${this.subName}`;
     }
     if (this.subject) {
       str = `${str} (${this.subject})`;

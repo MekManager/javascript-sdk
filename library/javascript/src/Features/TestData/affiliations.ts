@@ -222,7 +222,7 @@ export const mockAffiliations = {
                 linkedAttributes: [Attribute.INT, [Attribute.DEX, Attribute.INT]],
               })
             );
-            skill.subSkill = 'Any';
+            skill.subName = 'Any';
 
             return skill;
           })(),

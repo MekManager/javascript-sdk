@@ -11,7 +11,7 @@ export class Skill implements Equity, Experience, Stringify {
   public level: number;
   public xp: number;
   // NOTE: this might benefit from stricter typing.
-  public subSkill?: string;
+  public subName?: string;
   public specialty?: string;
   public complexity: string;
   public links: Attribute | Attribute[];
@@ -43,8 +43,8 @@ export class Skill implements Equity, Experience, Stringify {
 
   public toString (): string {
     let str = this.base.name;
-    if (this.subSkill) {
-      str = `${str}/${this.subSkill}`;
+    if (this.subName) {
+      str = `${str}/${this.subName}`;
     }
     if (this.specialty) {
       str = `${str} (${this.specialty})`;
