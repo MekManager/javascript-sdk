@@ -65,8 +65,8 @@ export class Trait implements Equity, Experience, Stringify {
    * @param xp The amount of XP to add
    */
   public addXP (xp: number): void {
-    this.xp = xp;
-    this.level = this._calculatePoints(xp);
+    this.xp += xp;
+    this.level = this._calculatePoints(this.xp);
   }
 
   public equal (trait: Trait): boolean {
@@ -80,7 +80,7 @@ export class Trait implements Equity, Experience, Stringify {
    */
   public setXP (xp: number): void {
     this.xp = xp;
-    this.level = this._calculatePoints(xp);
+    this.level = this._calculatePoints(this.xp);
   }
 
   /**
@@ -89,8 +89,8 @@ export class Trait implements Equity, Experience, Stringify {
    * @param xp The amount of XP to remove
    */
   public removeXP (xp: number): void {
-    this.xp = xp;
-    this.level = this._calculatePoints(xp);
+    this.xp -= xp;
+    this.level = this._calculatePoints(this.xp);
   }
 
   /**
