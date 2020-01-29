@@ -1,4 +1,6 @@
 .private/
+.features/
+
 node_modules/
 build/
 dist/

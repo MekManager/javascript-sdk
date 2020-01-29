@@ -14,9 +14,11 @@
     "build": "tsc -p ./tsconfig.json",
     "build:watch": "tsc -w",
     "clear-features": "rm -f ./dist/Features/*.feature",
-    "full-feature-test": "yarn run relink-features && yarn run build && yarn run test-features",
-    "link-features": "cd ./dist/Features && ln -s ../../../shared/features/*.feature .",
+    "full-feature-test": "yarn run build && yarn run relink-features && yarn run build && yarn run test-features",
+    "link-features": "cd ./dist/Features && ln -s ../../.features/*.feature .",
     "lint": "tslint -p . src/**/*.ts",
+    "pull-features": "git clone https://gitlab.com/mek-manager/sdks/features.git .features",
+    "refresh-features": "cd .features && git pull",
     "relink-features": "yarn run clear-features && yarn run link-features",
     "test": "yarn run tsc && yarn mocha dist/**/specs/*.spec.js",
     "test-features": "cucumber-js ./dist/Features"
