@@ -21,4 +21,5 @@ lint:
 test:
   stage: test
   script:
+    - yar run pull-features
     - yarn run full-feature-test
