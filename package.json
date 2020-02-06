@@ -18,7 +18,7 @@
     "clear-features": "rm -f ./dist/Features/*.feature",
     "full-feature-test": "yarn run build && yarn run relink-features && yarn run test-features",
     "link-features": "cd ./dist/Features && ln -s ../../.features/*.feature .",
-    "lint": "tslint -p . src/**/*.ts",
+    "lint": "tslint -p ./tsconfig.json",
     "pull-features": "git clone https://gitlab.com/mek-manager/sdks/features.git .features",
     "refresh-features": "cd .features && git pull",
     "relink-features": "yarn run clear-features && yarn run link-features",
