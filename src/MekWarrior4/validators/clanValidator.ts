@@ -55,7 +55,7 @@ export class ClanValidator implements Validator {
 
         return errors;
       },
-      []
+      [] as ValidationError[]
     );
 
     if (canTakeClanModules && character.caste === undefined) {

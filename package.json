@@ -11,10 +11,12 @@
     "dist/**/*"
   ],
   "scripts": {
-    "build": "tsc -p ./tsconfig.json",
+    "build": "yarn run build:main && yarn run build:test",
+    "build:main": "tsc -p ./tsconfig.json",
+    "build:test": "tsc -p ./tsconfig.test.json",
     "build:watch": "tsc -w",
     "clear-features": "rm -f ./dist/Features/*.feature",
-    "full-feature-test": "yarn run build && yarn run relink-features && yarn run build && yarn run test-features",
+    "full-feature-test": "yarn run build && yarn run relink-features && yarn run test-features",
     "link-features": "cd ./dist/Features && ln -s ../../.features/*.feature .",
     "lint": "tslint -p . src/**/*.ts",
     "pull-features": "git clone https://gitlab.com/mek-manager/sdks/features.git .features",

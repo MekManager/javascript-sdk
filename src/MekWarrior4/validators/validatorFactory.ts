@@ -44,13 +44,14 @@ export class ValidatorFactory {
     // the list of base validators that should always be checked.
     const characterSpecificValidators = character.activeLifeModules.reduce(
       (validators, lm) =>
-        validators.concat(lm.rules.reduce(validatorsForRule, [])), []
+        validators.concat(lm.rules.reduce(validatorsForRule, [])),
+        [] as Validator[]
     );
 
     return ValidatorFactory.baseValidators().concat(characterSpecificValidators);
   }
 
-  public static createFor (rule: Rule): Validator {
+  public static createFor (rule: Rule): Validator | undefined {
     switch (rule.name) {
       case RuleName.CANNOT_BE_ONLY_AFFILIATION:
         return new SingularAffiliationValidator();

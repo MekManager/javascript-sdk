@@ -16,13 +16,19 @@ export class Skill implements IEquity, IExperience, IStringify {
   public links: Attribute | Attribute[];
   public targetNumber: number;
 
+  private readonly _base: SkillBase;
+
   constructor (base: SkillBase) {
-    this.base = base;
+    this._base = base;
     this.xp = 0;
   }
 
   get name (): string {
-    return this.base.name;
+    return this._base.name;
+  }
+
+  get tiered (): boolean {
+    return this._base.tiered;
   }
 
   public addXP (xp: number, l: Learning): void {
@@ -117,9 +123,9 @@ export class Skill implements IEquity, IExperience, IStringify {
    *
    * @param subject The type of tiered value to be
    */
-  private _tieredValue<T> (subject: T[]): T {
-    if (this.base.tiered) {
-      return this.level <= 3 ? subject[0] : subject[1];
+  private _tieredValue<T> (subject: [T, T?]): T {
+    if (this.tiered && subject[1]) {
+      return (this.level <= 3) ? subject[0] : subject[1];
     } else {
       return subject[0];
     }

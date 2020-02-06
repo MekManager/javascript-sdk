@@ -51,7 +51,11 @@ export class Attributes implements IExperience {
       case Attribute.WIL: return this._willpower;
       case Attribute.CHA: return this._charisma;
       case Attribute.EDG: return this._charisma;
-      default: return undefined;
+      // NOTE: The only way this could happen is if someone were to use the
+      // library in plain JavaScript, and pass some nonsense value into the
+      // method. But at that point they've already opted out of type checking
+      // and there's only not much that can be done.
+      default: return this._strength;
     }
   }
 

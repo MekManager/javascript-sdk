@@ -26,7 +26,7 @@ export class CharacterCreationHarness {
   public _character: Character;
   private _valid: boolean;
 
-  constructor (character: Character = undefined) {
+  constructor (character?: Character) {
     this._valid = false;
 
     if (character) {

@@ -20,6 +20,7 @@ export class ClanWarriorMustTakeTraitValidator implements Validator {
   public valid (character: Character): boolean {
     const traitName = this._config['trait'];
     const trait = character.traits.find(t => t.base.name === traitName);
+    const caste = character.caste;
     const hasClanAffiliation = character
       .affiliations()
       .filter(a => a.isClan)
@@ -29,7 +30,14 @@ export class ClanWarriorMustTakeTraitValidator implements Validator {
       .filter(a => a.hasRuleFor(RuleName.ACTS_AS_CLAN))
       .length > 0;
 
-    if (isWarriorCaste(character.caste) && (hasClanAffiliation || canActAsClan)) {
+    // According to the message in the else block below:
+    // If this character doesn't have a caste, they can't be a warrior. So
+    // they aren't subject to this restriction.
+    if (caste === undefined) {
+      return true;
+    }
+
+    if (isWarriorCaste(caste) && (hasClanAffiliation || canActAsClan)) {
       if (trait === undefined) {
         this.errors.push({
           message: `This character must have the trait ${traitName}`,
@@ -48,5 +56,3 @@ export class ClanWarriorMustTakeTraitValidator implements Validator {
     }
   }
 }
-
-

@@ -29,7 +29,6 @@ export class Character implements IExperience {
   constructor () {
     this.name = new Name();
     this.xp = 0;
-    this._affiliations = undefined;
     this._affiliations = [];
     this._lifeModules = [];
     this.flavor = newCharacterFlavor();
@@ -267,7 +266,7 @@ export class Character implements IExperience {
    *
    * @param name The name of the trait to get
    */
-  public getTrait (name: string): Trait {
+  public getTrait (name: string): Trait | undefined {
     return this.traits.find(t => t.name === name);
   }
 

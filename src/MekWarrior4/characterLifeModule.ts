@@ -15,7 +15,7 @@ export class CharacterLifeModule {
    */
   public stage: LifeStage;
   // TODO: This should get a proper type in the future.
-  public fields?: string[];
+  public fields: string[];
 
   /** The module this class encapsulates */
   private _module: LifeModule;
