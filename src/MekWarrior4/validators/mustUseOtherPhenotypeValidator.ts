@@ -21,9 +21,7 @@ export class MustUseOtherPhenotypeValidator implements Validator {
     const otherPhenotype: string = this._config['phenotype'];
     const phenotype = character
       .traits
-      .find(
-        t => t.base.name === 'Phenotype' && t.subName === phenotypeName
-      );
+      .find(t => t.name === 'Phenotype' && t.subName === phenotypeName);
 
     if (phenotype === undefined) {
       return true;

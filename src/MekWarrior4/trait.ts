@@ -3,7 +3,6 @@ import { LifeStage } from './lifeStage';
 import { TraitBase } from './traitBase';
 
 export class Trait implements IEquity, IExperience, IStringify {
-  public readonly base: TraitBase;
   /** The amount of Trait Points or TP a trait has. */
   public level: number;
   /** The amount of raw XP a trait has. */
@@ -36,8 +35,10 @@ export class Trait implements IEquity, IExperience, IStringify {
    */
   public stageTaken?: LifeStage;
 
+  private readonly _base: TraitBase;
+
   constructor (base: TraitBase) {
-    this.base = base;
+    this._base = base;
     this.xp = 0;
     this.level = this._calculatePoints(0);
   }
@@ -55,7 +56,19 @@ export class Trait implements IEquity, IExperience, IStringify {
    * The base name of this `Trait`.
    */
   get name (): string {
-    return this.base.name;
+    return this._base.name;
+  }
+
+  get multipleAllowed (): boolean {
+    return this._base.multipleAllowed;
+  }
+
+  get max (): number | undefined {
+    return this._base.max;
+  }
+
+  get min (): number | undefined {
+    return this._base.min;
   }
 
   /**
@@ -121,9 +134,9 @@ export class Trait implements IEquity, IExperience, IStringify {
   private _calculatePoints (xp: number): number {
     const points = Math.floor(xp / 100);
 
-    if (this.base.max && points > this.base.max) {
-      return this.base.max;
-    } else if (this.base.min && points < this.base.min) {
+    if (this._base.max && points > this._base.max) {
+      return this._base.max;
+    } else if (this._base.min && points < this._base.min) {
       return 0;
     } else {
       return points;

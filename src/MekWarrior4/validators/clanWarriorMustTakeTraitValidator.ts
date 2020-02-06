@@ -19,7 +19,7 @@ export class ClanWarriorMustTakeTraitValidator implements Validator {
 
   public valid (character: Character): boolean {
     const traitName = this._config['trait'];
-    const trait = character.traits.find(t => t.base.name === traitName);
+    const trait = character.traits.find(t => t.name === traitName);
     const caste = character.caste;
     const hasClanAffiliation = character
       .affiliations()

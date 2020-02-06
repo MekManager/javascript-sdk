@@ -6,7 +6,6 @@ import { SkillBase } from './skillBase';
 
 // TODO: write more documentation for this
 export class Skill implements IEquity, IExperience, IStringify {
-  public readonly base: SkillBase;
   public level: number;
   public xp: number;
   // NOTE: this might benefit from stricter typing.
@@ -25,6 +24,18 @@ export class Skill implements IEquity, IExperience, IStringify {
 
   get name (): string {
     return this._base.name;
+  }
+
+  get targetNumbers (): [number, number?] {
+    return this._base.targetNumbers;
+  }
+
+  get complexityRatings (): [string, string?] {
+    return this._base.complexityRatings;
+  }
+
+  get linkedAttributes (): [Attribute, [Attribute, Attribute]?] {
+    return this._base.linkedAttributes;
   }
 
   get tiered (): boolean {
@@ -47,7 +58,7 @@ export class Skill implements IEquity, IExperience, IStringify {
   }
 
   public toString (): string {
-    let str = this.base.name;
+    let str = this._base.name;
     if (this.subName) {
       str = `${str}/${this.subName}`;
     }
@@ -99,17 +110,17 @@ export class Skill implements IEquity, IExperience, IStringify {
   }
 
   private _calculateComplexity (): void {
-    this.complexity = this._tieredValue<string>(this.base.complexityRatings);
+    this.complexity = this._tieredValue<string>(this.complexityRatings);
   }
 
   private _calculateLinks (): void {
     this.links = this._tieredValue<Attribute | Attribute[]>(
-      this.base.linkedAttributes
+      this.linkedAttributes
      );
   }
 
   private _calculateTargetNumber (): void {
-    this.targetNumber = this._tieredValue<number>(this.base.targetNumbers);
+    this.targetNumber = this._tieredValue<number>(this.targetNumbers);
   }
 
   /**
