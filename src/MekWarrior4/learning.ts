@@ -12,8 +12,6 @@ export const xpList = (l: Learning): number[] => {
   switch (l) {
     case Learning.FAST:
       return fastXP;
-    case Learning.STANDARD:
-      return standardXP;
     case Learning.SLOW:
       return slowXP;
     default:

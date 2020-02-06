@@ -134,9 +134,9 @@ export class Trait implements IEquity, IExperience, IStringify {
   private _calculatePoints (xp: number): number {
     const points = Math.floor(xp / 100);
 
-    if (this._base.max && points > this._base.max) {
-      return this._base.max;
-    } else if (this._base.min && points < this._base.min) {
+    if (this.max && points > this.max) {
+      return this.max;
+    } else if (this.min && points < this.min) {
       return 0;
     } else {
       return points;

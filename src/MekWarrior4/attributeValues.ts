@@ -11,11 +11,7 @@ export class AttributeValues implements IExperience {
   public xp: number;
 
   constructor (values?: AttributeValues) {
-    if (values) {
-      this.setXP(values.xp);
-    } else {
-      this.setXP(0);
-    }
+    this.setXP(values?.xp || 0);
   }
 
   /**
