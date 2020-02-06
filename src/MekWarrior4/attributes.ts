@@ -1,8 +1,8 @@
-import { Experience } from '../interfaces';
+import { IExperience } from '../interfaces';
 import { Attribute } from './attribute';
 import { AttributeValues } from './attributeValues';
 
-export class Attributes implements Experience {
+export class Attributes implements IExperience {
   private _strength: AttributeValues;
   private _body: AttributeValues;
   private _reflexes: AttributeValues;

@@ -2,7 +2,7 @@
  * Describes objects with the ability to determine if another instance is
  * equal to itself.
  */
-export interface Equity {
+export interface IEquity {
   /**
    * Determines if another instance of the same class is equal to the caller.
    *

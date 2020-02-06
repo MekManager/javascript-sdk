@@ -1,9 +1,8 @@
-import { Equity } from 'interfaces/equity';
-import { Experience, Stringify } from '../interfaces';
+import { IEquity, IExperience, IStringify } from '../interfaces';
 import { LifeStage } from './lifeStage';
 import { TraitBase } from './traitBase';
 
-export class Trait implements Equity, Experience, Stringify {
+export class Trait implements IEquity, IExperience, IStringify {
   public readonly base: TraitBase;
   /** The amount of Trait Points or TP a trait has. */
   public level: number;

@@ -1,5 +1,4 @@
-import { Equity } from 'interfaces/equity';
-import { Experience, toString } from '../interfaces';
+import { IEquity, IExperience, toString } from '../interfaces';
 import { Attribute } from './attribute';
 import { Attributes } from './attributes';
 import { CharacterFlavor, newCharacterFlavor } from './characterFlavor';
@@ -13,7 +12,7 @@ import { Name } from './name';
 import { Skill } from './skill';
 import { Trait } from './trait';
 
-export class Character implements Experience {
+export class Character implements IExperience {
   public name: Name;
   public xp: number;
   public flavor: CharacterFlavor;
@@ -311,13 +310,13 @@ export class Character implements Experience {
         return;
       }
 
-      set.options.forEach((option: Attribute | Experience, index: number) => {
+      set.options.forEach((option: Attribute | IExperience, index: number) => {
         this._applyFixedXpOption(option, set, index);
       });
     });
   }
 
-  private _applyFixedXpOption (option: Attribute | Experience, set: FixedXP, index: number): void {
+  private _applyFixedXpOption (option: Attribute | IExperience, set: FixedXP, index: number): void {
     if (typeof option === 'string') {
       this.addAttributeXP(option as Attribute, set.xp, false);
     } else {
@@ -349,7 +348,7 @@ export class Character implements Experience {
     }
   }
 
-  private _addToExperience<T extends Experience & Equity> (ts: T[], target: T, xp: number, spend: boolean): T[] {
+  private _addToExperience<T extends IExperience & IEquity> (ts: T[], target: T, xp: number, spend: boolean): T[] {
     const t = ts.find(x => x.equal(target));
 
     if (spend) {
@@ -367,7 +366,7 @@ export class Character implements Experience {
     }
   }
 
-  private _removeFromExperience<T extends Experience & Equity> (ts: T[], target: T, xp: number, refund: boolean): T[] {
+  private _removeFromExperience<T extends IExperience & IEquity> (ts: T[], target: T, xp: number, refund: boolean): T[] {
     const t = ts.find(x => x.equal(target));
 
     if (refund) {

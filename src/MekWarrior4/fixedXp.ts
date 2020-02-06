@@ -1,4 +1,4 @@
-import { Experience } from '../interfaces';
+import { IExperience } from '../interfaces';
 import { Attribute } from './attribute';
 import { Skill } from './skill';
 import { Trait } from './trait';
@@ -10,7 +10,7 @@ export class FixedXP {
   constructor (
     /** The number of choices allowed for the set */
     public choices: number,
-    public options: Attribute[] | Experience[],
+    public options: Attribute[] | IExperience[],
     public xp: number
   ) {
     this._chosen = [];

@@ -1,7 +1,7 @@
 /**
  * Interface guaranteeing that a class can be represented in string format.
  */
-export interface Stringify {
+export interface IStringify {
   toString (): string;
 }
 
@@ -11,4 +11,4 @@ export interface Stringify {
  *
  * @param s Some Stringifyable value
  */
-export const toString = (s: Stringify) => s.toString();
+export const toString = (s: IStringify) => s.toString();

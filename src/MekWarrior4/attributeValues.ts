@@ -1,9 +1,9 @@
-import { Experience } from '../interfaces';
+import { IExperience } from '../interfaces';
 
 /**
  * Describes the values that are associated with an attribute.
  */
-export class AttributeValues implements Experience {
+export class AttributeValues implements IExperience {
   /** The score of an attribute based on how much XP it has. */
   public score: number;
   public link: number;

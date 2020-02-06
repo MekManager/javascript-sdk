@@ -1,2 +1,3 @@
-export { toString, Stringify } from './stringify';
-export { Experience } from './experience';
+export { toString, IStringify } from './stringify';
+export { IExperience } from './experience';
+export { IEquity } from './equity';

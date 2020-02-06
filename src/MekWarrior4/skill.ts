@@ -1,12 +1,11 @@
-import { Equity } from 'interfaces/equity';
-import { Experience, Stringify } from '../interfaces';
+import { IEquity, IExperience, IStringify } from '../interfaces';
 import { findLastIndex } from '../Utils/collections';
 import { Attribute } from './attribute';
 import { Learning, xpList } from './learning';
 import { SkillBase } from './skillBase';
 
 // TODO: write more documentation for this
-export class Skill implements Equity, Experience, Stringify {
+export class Skill implements IEquity, IExperience, IStringify {
   public readonly base: SkillBase;
   public level: number;
   public xp: number;
