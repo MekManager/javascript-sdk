@@ -26,7 +26,7 @@ export class ClanValidator implements Validator {
 
     const characterIsTrueborn = character
       .traits
-      .find(t => t.base.name === 'Phenotype') !== undefined;
+      .find(t => t.name === 'Phenotype') !== undefined;
 
     const canTakeClanModules = (hasClanAffiliation || canActAsClan);
 
@@ -55,7 +55,7 @@ export class ClanValidator implements Validator {
 
         return errors;
       },
-      []
+      [] as ValidationError[]
     );
 
     if (canTakeClanModules && character.caste === undefined) {

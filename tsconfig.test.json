@@ -1,0 +1,12 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "strictNullChecks": false,
+  },
+  "include": [
+    "./src/Features/*.ts"
+  ],
+  "exclude": [
+    "./node_modules",
+  ]
+}

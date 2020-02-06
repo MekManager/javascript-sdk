@@ -29,7 +29,6 @@ export class Character implements IExperience {
   constructor () {
     this.name = new Name();
     this.xp = 0;
-    this._affiliations = undefined;
     this._affiliations = [];
     this._lifeModules = [];
     this.flavor = newCharacterFlavor();
@@ -73,10 +72,10 @@ export class Character implements IExperience {
     );
     const currentAffiliation = this.currentAffiliation;
 
-    if (currentAffiliation === undefined) {
-      return nonAffilations;
-    } else {
+    if (currentAffiliation) {
       return [ currentAffiliation, ...nonAffilations ];
+    } else {
+      return nonAffilations;
     }
   }
 
@@ -89,7 +88,7 @@ export class Character implements IExperience {
     // searching for their names as strings
     const slow = this.traits.find(t => t.name === 'Slow Learner');
 
-    if (slow && slow.isActive) {
+    if (slow?.isActive) {
       this._learning = Learning.SLOW;
 
       return this._learning;
@@ -97,7 +96,7 @@ export class Character implements IExperience {
 
     const fast = this.traits.find(t => t.name === 'Fast Learner');
 
-    if (fast && fast.isActive) {
+    if (fast?.isActive) {
       this._learning = Learning.FAST;
 
       return this._learning;
@@ -175,12 +174,9 @@ export class Character implements IExperience {
       this._affiliations = this._lifeModules.filter(
         lm => lm.stage === LifeStage.AFFILIATION
       );
-
-      return this._affiliations;
-    } else {
-
-      return this._affiliations;
     }
+
+    return this._affiliations;
   }
 
   /**
@@ -267,7 +263,7 @@ export class Character implements IExperience {
    *
    * @param name The name of the trait to get
    */
-  public getTrait (name: string): Trait {
+  public getTrait (name: string): Trait | undefined {
     return this.traits.find(t => t.name === name);
   }
 

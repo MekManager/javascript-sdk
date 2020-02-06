@@ -22,7 +22,7 @@ export class LifeModule {
     return this._ruleFor(name) !== undefined;
   }
 
-  private _ruleFor (name: RuleName): Rule {
+  private _ruleFor (name: RuleName): Rule | undefined {
     return this.rules.find(r => r.name === name);
   }
 }

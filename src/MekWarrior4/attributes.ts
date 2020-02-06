@@ -41,7 +41,7 @@ export class Attributes implements IExperience {
    *
    * @param attr The attribute to find the values of
    */
-  public getValues (attr: Attribute) {
+  public getValues (attr: Attribute): AttributeValues {
     switch (attr) {
       case Attribute.STR: return this._strength;
       case Attribute.BOD: return this._body;
@@ -50,8 +50,7 @@ export class Attributes implements IExperience {
       case Attribute.INT: return this._intelligence;
       case Attribute.WIL: return this._willpower;
       case Attribute.CHA: return this._charisma;
-      case Attribute.EDG: return this._charisma;
-      default: return undefined;
+      case Attribute.EDG: return this._edge;
     }
   }
 
@@ -63,10 +62,7 @@ export class Attributes implements IExperience {
    * @param attr The attribute to have XP added to
    */
   public addXP (xp: number, attr: Attribute): void {
-    const values = this.getValues(attr);
-    if (values) {
-      values.addXP(xp);
-    }
+    this.getValues(attr)?.addXP(xp);
   }
 
   /**
@@ -77,10 +73,7 @@ export class Attributes implements IExperience {
    * @param attr The attribute to have XP added to
    */
   public removeXP (xp: number, attr: Attribute): void {
-    const values = this.getValues(attr);
-    if (values) {
-      values.removeXP(xp);
-    }
+    this.getValues(attr)?.removeXP(xp);
   }
 
   /**
@@ -93,15 +86,10 @@ export class Attributes implements IExperience {
    * @param attr The attribute to have XP added to
    */
   public setXP (xp: number, attr: Attribute): void {
-    const values = this.getValues(attr);
-    if (values) {
-      values.setXP(xp);
-    }
+    this.getValues(attr)?.setXP(xp);
   }
 
   public xpValue (attr: Attribute): number {
-    const values = this.getValues(attr);
-
-    return values.xpValue();
+    return this.getValues(attr).xpValue();
   }
 }

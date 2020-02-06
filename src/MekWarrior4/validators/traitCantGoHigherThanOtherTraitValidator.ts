@@ -57,6 +57,9 @@ export class TraitCantGoHigherThanOtherTraitValidator implements Validator {
         return false;
       }
     }
+
+    // If there was no failure above it must be valid
+    return true;
   }
 }
 
