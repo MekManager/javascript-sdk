@@ -3,7 +3,7 @@
  * function.
  *
  * @param fn The predicate function
- * @param ls The list to find run the predicate function on.
+ * @param ls The list to run the predicate function on.
  * @returns The last index found matching the predicate, or -1.
  */
 export const findLastIndex = <T>(fn: (t: T) => boolean, ls: T[]): number => {
