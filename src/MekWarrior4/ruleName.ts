@@ -15,6 +15,7 @@ export enum RuleName {
   ONLY_ONE_MODULE_ALLOWED_FOR_STAGE = 'only_one_module_allowed_for_stage',
   TRAIT_CANT_GO_HIGHER_THAN_OTHER = 'trait_cant_go_higher_than_other',
   TRAIT_MUST_HAVE_OTHER_TRAIT = 'trait_must_have_other_trait',
+  TRAIT_NOT_ABOVE_MINIMUM = 'trait_not_above_minimum',
   TRAIT_NOT_ALLOWED = 'trait_not_allowed',
   TRAIT_RESTRICTS_TRAIT = 'trait_restricts_trait',
   TRUEBORN_ONLY = 'trueborn_only',

@@ -85,6 +85,12 @@ const clanWarriorMustTakeTrait = new Rule(
     trait: 'Natural Aptitude',
   }
 );
+const needsDecentVision = new Rule(
+  RuleName.TRAIT_NOT_ABOVE_MINIMUM,
+  {
+    trait: 'Poor Vision',
+  }
+);
 
 export const mockRules = {
   actsAsClan,
@@ -95,6 +101,7 @@ export const mockRules = {
   legalChildLabor,
   linkedTraits,
   mustUseOtherPhenotype,
+  needsDecentVision,
   noFarm,
   noGreenThumb,
   noHigherEducation,

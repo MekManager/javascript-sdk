@@ -35,6 +35,7 @@ export {
 export {
   TraitMustHaveOtherTraitValidator
 } from './traitMustHaveOtherTraitValidator';
+export { TraitNotAboveMinimumValidator } from './traitNotAboveMinimumValidator';
 export { TraitNotAllowedValidator } from './traitNotAllowedValidator';
 export { Validator } from './validator';
 export { ValidatorFactory } from './validatorFactory';

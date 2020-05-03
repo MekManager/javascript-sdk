@@ -101,14 +101,23 @@ const title = new Trait(new TraitBase({
   multipleAllowed: false,
 }));
 
+const poorVision = new Trait(new TraitBase({
+  name: 'Poor Vision',
+  multipleAllowed: false,
+  min: -1,
+  max: -5,
+  negative: true,
+}));
+
 export const mockTraits = {
-  'MekWarrior Phenotype': mekwarriorPhenotype,
   'Aerospace Phenotype': aerospacePhenotype,
   'Animal Empathy': animalEmpathy,
   'Elemental Phenotype': elementalPhenotype,
   'Green Thumb': greenThumb,
+  'MekWarrior Phenotype': mekwarriorPhenotype,
+  'Natural Aptitude': naturalAptitude,
+  'Poor Vision': poorVision,
   'Rank': rank,
   'Royalty': royalty,
-  'Natural Aptitude': naturalAptitude,
   'Title': title,
 };

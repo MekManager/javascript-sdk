@@ -48,7 +48,7 @@ When('the character takes the caste: {string}', (caste: string) => {
 });
 
 When(
-  /^the character takes the trait: \"(.*)\"(?: during stage (\d+))?(?: with (\d+) XP)?/,
+  /^the character takes the trait: \"(.*)\"(?: during stage (\d+))?(?: with (-?\d+) XP)?/,
   (traitStr: string, stage?: number, xp?: number) => {
     const trait: Trait = mockTraits[traitStr];
     expect(trait).not.to.be.undefined;

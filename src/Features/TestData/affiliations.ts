@@ -94,6 +94,13 @@ const deepPeriphery = new LifeModule(
   []
 );
 
+const goodVision = new LifeModule(
+  LifeStage.AFFILIATION,
+  '',
+  [ mockRules.needsDecentVision ],
+  []
+);
+
 const bigBoyClan = new LifeModule(
   LifeStage.AFFILIATION,
   'Clan BigBoy',
@@ -190,6 +197,7 @@ export const mockAffiliations = {
   'Royal Snob': () => royalSnob,
   'Sphere/Clan Hybrid': () => sphereClanHybrid,
   'Top Tier Clan': () => topTierClan,
+  'Good Vision': () => goodVision,
   'Fixed BOD XP': () => fixedXpBod,
   // This needs to be invoked as a function otherwise it isn't unique between
   // scenarios in the features.
