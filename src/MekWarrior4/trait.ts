@@ -40,7 +40,7 @@ export class Trait implements IEquity, IExperience, IStringify {
   constructor (base: TraitBase) {
     this._base = base;
     this.xp = 0;
-    this.level = this._calculatePoints(0);
+    this.level = this._calculateLevel(0);
   }
 
 /**
@@ -59,16 +59,61 @@ export class Trait implements IEquity, IExperience, IStringify {
     return this._base.name;
   }
 
+  /**
+   * Determines if this trait's level is above it's minimum value.
+   */
+  get levelAboveMinimum (): boolean {
+    return this._base.levelAboveMinimum(this.level);
+  }
+
+  /**
+   * Determines if this trait's level is at it's maximum value.
+   */
+  get levelAtMaximum (): boolean {
+    return this._base.levelAtMaximum(this.level);
+  }
+
+  /**
+   * Determines if this trait's level is at it's minimum value.
+   */
+  get levelAtMinimum (): boolean {
+    return this._base.levelAtMinimum(this.level);
+  }
+
+  /**
+   * Determines if this trait's level is below it's maximum value.
+   */
+  get levelUnderMaximum (): boolean {
+    return this._base.levelUnderMaximum(this.level);
+  }
+
+  /**
+   * If a character can have instances of this trait.
+   */
   get multipleAllowed (): boolean {
     return this._base.multipleAllowed;
   }
 
+  /**
+   * The maximum level this trait can be at.
+   */
   get max (): number | undefined {
     return this._base.max;
   }
 
+  /**
+   * The minimum level for this trait to be considered active.
+   */
   get min (): number | undefined {
     return this._base.min;
+  }
+
+  /**
+   * If the trait is has negative XP, i.e. gives the character XP _back_ for
+   * taking it.
+   */
+  get negative (): boolean {
+    return this._base.negative;
   }
 
   /**
@@ -78,7 +123,7 @@ export class Trait implements IEquity, IExperience, IStringify {
    */
   public addXP (xp: number): void {
     this.xp += xp;
-    this.level = this._calculatePoints(this.xp);
+    this.level = this._calculateLevel(this.xp);
   }
 
   public equal (trait: Trait): boolean {
@@ -92,7 +137,7 @@ export class Trait implements IEquity, IExperience, IStringify {
    */
   public setXP (xp: number): void {
     this.xp = xp;
-    this.level = this._calculatePoints(this.xp);
+    this.level = this._calculateLevel(this.xp);
   }
 
   /**
@@ -102,7 +147,7 @@ export class Trait implements IEquity, IExperience, IStringify {
    */
   public removeXP (xp: number): void {
     this.xp -= xp;
-    this.level = this._calculatePoints(this.xp);
+    this.level = this._calculateLevel(this.xp);
   }
 
   /**
@@ -127,19 +172,23 @@ export class Trait implements IEquity, IExperience, IStringify {
     return str;
   }
 
+  /**
+   * This trait's current XP
+   */
   public xpValue (): number {
     return this.xp;
   }
 
-  private _calculatePoints (xp: number): number {
-    const points = Math.floor(xp / 100);
+  private _calculateLevel (xp: number): number {
+    const level = Math.floor(xp / 100);
 
-    if (this.max && points > this.max) {
-      return this.max;
-    } else if (this.min && points < this.min) {
+
+    if (this._base.levelAboveMaximum(level)) {
+      return this.max || 0;
+    } else if (this._base.levelUnderMinimum(level)) {
       return 0;
     } else {
-      return points;
+      return level;
     }
   }
 

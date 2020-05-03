@@ -16,6 +16,7 @@ import { OnlyOneModuleAllowedForStageValidator } from './onlyOneModuleAllowedFor
 import { SingularAffiliationValidator } from './singularAffiliationValidator';
 import { TraitCantGoHigherThanOtherTraitValidator } from './traitCantGoHigherThanOtherTraitValidator';
 import { TraitMustHaveOtherTraitValidator } from './traitMustHaveOtherTraitValidator';
+import { TraitNotAboveMinimumValidator } from './traitNotAboveMinimumValidator';
 import { TraitNotAllowedValidator } from './traitNotAllowedValidator';
 import { Validator } from './validator';
 
@@ -65,6 +66,8 @@ export class ValidatorFactory {
         return new AttributeMinimumForTraitFromStageValidator(rule.config);
       case RuleName.TRAIT_MUST_HAVE_OTHER_TRAIT:
         return new TraitMustHaveOtherTraitValidator(rule.config);
+      case RuleName.TRAIT_NOT_ABOVE_MINIMUM:
+        return new TraitNotAboveMinimumValidator(rule.config);
       case RuleName.TRAIT_NOT_ALLOWED:
         return new TraitNotAllowedValidator(rule.config);
       case RuleName.MUST_SKIP_STAGE:
