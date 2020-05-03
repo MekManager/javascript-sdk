@@ -5,6 +5,7 @@ export {
   AttributeMinimumForTraitValidator
 } from './attributeMinimumForTraitValidator';
 export { CantHaveModuleValidator } from './cantHaveModuleValidator';
+export { CharacterValidationService } from './characterValidationService';
 export { ChildLaborValidator } from './childLaborValidator';
 export { ClanValidator } from './clanValidator';
 export {

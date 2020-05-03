@@ -20,6 +20,7 @@
     "link-features": "cd ./dist/Features && ln -s ../../.features/*.feature .",
     "lint": "tslint -p ./tsconfig.json",
     "pull-features": "git clone https://gitlab.com/mek-manager/sdks/features.git .features",
+    "re-build": "rm -rf dist/ && yarn run build && yarn run link-features",
     "refresh-features": "cd .features && git pull",
     "relink-features": "yarn run clear-features && yarn run link-features",
     "test": "yarn run tsc && yarn mocha dist/**/specs/*.spec.js",

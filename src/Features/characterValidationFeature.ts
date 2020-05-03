@@ -2,21 +2,28 @@ import { expect } from 'chai';
 import { Given, Then, When } from 'cucumber';
 import {
   Attribute,
-  CharacterCreationHarness,
+  Character,
   ClanCaste,
   LifeModule,
   LifeStage,
   Trait,
 } from '../MekWarrior4';
+import { CharacterValidationService } from '../MekWarrior4/validators';
 import { mockAffiliations } from './TestData/affiliations';
 import { mockLifeModules } from './TestData/lifeModules';
 import { mockTraits } from './TestData/traits';
 
-const world: { harness?: CharacterCreationHarness } = {};
+const world: {
+  character?: Character
+  initialXP: number
+} = {
+  initialXP: 0,
+};
 
 
 Given('a new character', () => {
-  world.harness = new CharacterCreationHarness();
+  world.character = new Character();
+  world.initialXP = world.character.xpValue();
 });
 
 
@@ -24,7 +31,7 @@ When('the character takes the affiliation: {string}', (affil: string) => {
   const affiliation: LifeModule = mockAffiliations[affil]();
   expect(affiliation).not.to.be.undefined;
 
-  world.harness.addAffiliation(affiliation);
+  world.character.addAffiliation(affiliation);
 });
 
 When(
@@ -34,9 +41,9 @@ When(
     expect(mod).not.to.be.undefined;
 
     if (field !== undefined) {
-      world.harness.addModule(stage, mod, field);
+      world.character.addLifeModule(stage, mod, field);
     } else {
-      world.harness.addModule(stage, mod);
+      world.character.addLifeModule(stage, mod);
     }
   }
 );
@@ -44,7 +51,7 @@ When(
 When('the character takes the caste: {string}', (caste: string) => {
   // The enum values are strings at the end of the day, and we can just assume
   // the tests are passing the correct values.
-  world.harness.addCaste(caste as ClanCaste);
+  world.character.caste = caste as ClanCaste;
 });
 
 When(
@@ -61,14 +68,14 @@ When(
       trait.setXP(xp);
     }
 
-    world.harness.addTrait(trait);
+    world.character.addTrait(trait);
   }
 );
 
 When(
   /^the user selects the (\d+)\w{2} option for the (\d+)\w{2} Fixed XP of the (\d+)\w{2} Life Module$/,
   (optionIndex: number, fixedXpIndex: number, lifeModuleIndex: number) => {
-    world.harness._character.selectFixedXP(
+    world.character.selectFixedXP(
       (lifeModuleIndex - 1),
       (fixedXpIndex - 1),
       (optionIndex - 1)
@@ -77,42 +84,43 @@ When(
 );
 
 When('the character adds {int} XP to their {string} attribute', (xp: number, attr: string) => {
-  world.harness.addAttributeXP(attr as Attribute, xp);
+  world.character.addAttributeXP(attr as Attribute, xp);
 });
 
 Then('the character should have a {string} score of {int}', (attr: Attribute, score: number) => {
-  expect(world.harness.getAttributeValue(attr).xp).to.equal(score);
+  expect(world.character.attributes.getValues(attr).xp).to.equal(score);
 });
 
 Then('no XP should have been spent', () => {
-  expect(world.harness.initialXP).to.equal(world.harness.currentXP);
+  expect(world.initialXP).to.equal(world.character.xpValue());
 });
 
 Then('the character should have {int} affiliation', (count: number) => {
-  expect(world.harness.modules().length).to.equal(count);
+  expect(world.character.lifeModules.length).to.equal(count);
 });
 
 Then('the character should be {string}', (validStr: string) => {
   const valid = validStr === 'Valid';
+  const service = new CharacterValidationService(world.character);
 
-  expect(world.harness.validate()).to.equal(
+  expect(service.validate()).to.equal(
     valid,
-    world.harness.errors.map(e => e.message).join('\n')
+    service.errors.map(e => e.message).join('\n')
   );
 });
 
 Then('the character should have {int} {string}', (expectedCount: number, target: string) => {
   const count = (target === 'skill' || target === 'skills')
-    ? world.harness._character.skills.length
-    : world.harness._character.traits.length;
+    ? world.character.skills.length
+    : world.character.traits.length;
 
   expect(count).to.equal(expectedCount);
 });
 
 Then('the character should have a {string} {string} with {int} XP', (name: string, target: string, xp: number) => {
   const experience = (target === 'skill')
-    ? world.harness._character.skills.find(s => s.name === name)
-    : world.harness._character.traits.find(t => t.name === name);
+    ? world.character.skills.find(s => s.name === name)
+    : world.character.traits.find(t => t.name === name);
 
   expect(experience.xpValue()).to.equal(xp);
 });

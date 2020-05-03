@@ -21,6 +21,7 @@ import { TraitNotAllowedValidator } from './traitNotAllowedValidator';
 import { Validator } from './validator';
 
 /**
+ * INTERNAL:
  * Takes a list of validators and a rule, if that rule has a validator associated
  * with it, it appends that validator to the given list.
  */
@@ -33,8 +34,20 @@ const validatorsForRule = (validators: Validator[], rule: Rule): Validator[] => 
   return validators;
 };
 
+// INTERNAL
+const baseValidators = () => [
+  new ChildLaborValidator(),
+  new ClanValidator(),
+];
+
 export class ValidatorFactory {
 
+  /**
+   * Given a character, returns a list of validators that can be used to test
+   * all of that character's life modules.
+   *
+   * @param character A character to get a list of validators for.
+   */
   public static validators (character: Character): Validator[] {
     // NOTE: This loop is pretty tight, but I'm not overly worried about it
     // because the collections it loops over are rarely even going to be in the
@@ -49,9 +62,14 @@ export class ValidatorFactory {
         [] as Validator[]
     );
 
-    return ValidatorFactory.baseValidators().concat(characterSpecificValidators);
+    return baseValidators().concat(characterSpecificValidators);
   }
 
+  /**
+   * Given a rule, determines what validator would test that rule.
+   *
+   * @param rule A rule to find a validator for
+   */
   public static createFor (rule: Rule): Validator | undefined {
     switch (rule.name) {
       case RuleName.CANNOT_BE_ONLY_AFFILIATION:
@@ -87,12 +105,5 @@ export class ValidatorFactory {
       default:
         return undefined;
     }
-  }
-
-  private static baseValidators (): Validator[] {
-    return [
-      new ChildLaborValidator(),
-      new ClanValidator(),
-    ];
   }
 }
