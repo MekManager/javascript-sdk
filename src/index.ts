@@ -6,7 +6,6 @@ export {
   Attributes,
   CantHaveModuleValidator,
   Character,
-  CharacterCreationHarness,
   CharacterFlavor,
   CharacterLifeModule,
   ChildLaborValidator,

@@ -108,6 +108,15 @@ export class Character implements IExperience {
   }
 
   /**
+   * Adds a trait onto this characters list of traits.
+   *
+   * @param trait The trait to be added to this character's list of traits.
+   */
+  public addTrait (trait: Trait): void {
+    this.traits.push(trait);
+  }
+
+  /**
    * Adds the given XP amount to this `Character`.
    *
    * @param xp The amount of XP to be added
