@@ -189,7 +189,7 @@ export class Character implements IExperience {
   }
 
   /**
-   * Adds the given amount of XP to this character's `Attribute`.
+   * Adds the given amount of XP to this character's specified `Attribute`.
    *
    * @param attr The attribute to add the XP to
    * @param xp The amount of XP that's being added
@@ -202,7 +202,7 @@ export class Character implements IExperience {
   }
 
   /**
-   * TODO: Write Me!
+   * Adds the given amount of XP to this character's specified `Skill`.
    *
    * @param target The skill to have XP added to
    * @param xp The amount of XP the skill should have added to it
@@ -213,7 +213,7 @@ export class Character implements IExperience {
   }
 
   /**
-   * TODO: Write Me!
+   * Adds the given amount of XP to this character's specified `Trait`.
    *
    * @param target The trait to have XP added to
    * @param xp The amount of XP the trait should have added to it
