@@ -224,7 +224,7 @@ export class Character implements IExperience {
   }
 
   /**
-   * Removes the given amount of XP from this character's `Attribute`.
+   * Removes the given amount of XP from this character's specified `Attribute`.
    *
    * @param attr The attribute to add the XP to
    * @param xp The amount of XP that's being added
@@ -237,7 +237,7 @@ export class Character implements IExperience {
   }
 
   /**
-   * TODO: Write Me!
+   * Removes the given amount of XP from this character's specified `Skill`.
    *
    * @param target The skill to have XP removed from
    * @param xp The amount of XP to remove from the skill
@@ -248,7 +248,7 @@ export class Character implements IExperience {
   }
 
   /**
-   * TODO: Write Me!
+   * Removes the given amount of XP from this character's specified `Trait`.
    *
    * @param target The trait to have XP removed from
    * @param xp The amount of XP to remove from the trait
