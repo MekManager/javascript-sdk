@@ -25,10 +25,18 @@ lint:
   script:
     - yarn run lint
 
-test:
+feature-tests:
   stage: test
   before_script:
     - *setup
   script:
     - yarn run pull-features
     - yarn run full-feature-test
+
+unit-tests:
+  stage: test
+  before_script:
+    - *setup
+  script:
+    - yarn run build
+    - yarn run test
