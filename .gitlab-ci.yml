@@ -1,4 +1,4 @@
-image: "node:12.7.0-alpine"
+image: "node:14.8.0-alpine"
 
 .setup: &setup
   - apk update
